@@ -46,6 +46,9 @@ var dbInstance db.DbIf
 
 func TestDb(t *testing.T) {
 	t.Run("Bbolt DB", testBboltDb)
+	if os.Getenv("NSF_TEST_CUSTOM_DB") == "1" {
+		t.Run("Custom DB", testCustomDb)
+	}
 }
 
 func testBboltDb(t *testing.T) {
