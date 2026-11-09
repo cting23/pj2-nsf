@@ -129,7 +129,11 @@ func (d *customDb) LoadAll() (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer cursor.Close(ctx)
+	defer func() {
+		if err := cursor.Close(ctx); err != nil {
+			fmt.Printf("Failed to close MongoDB cursor: %v\n", err)
+		}
+	}()
 
 	result := make(map[string]string)
 	for cursor.Next(ctx) {
